@@ -9,7 +9,7 @@ type Props = {
 };
 
 const FormAuth: React.FC<Props> = (props) => {
-  const { onFinish } = props;
+  const { onFinish, isRegister } = props;
 
   const layout = {
     labelCol: {
@@ -34,9 +34,22 @@ const FormAuth: React.FC<Props> = (props) => {
       }}
       validateMessages={validateMessages}
     >
+      {isRegister && (
+        <Form.Item
+          name={["auth", "fullName"]}
+          label="Полное имя"
+          rules={[
+            {
+              required: true,
+            },
+          ]}
+        >
+          <Input />
+        </Form.Item>
+      )}
       <Form.Item
-        name={["auth", "login"]}
-        label="Логин"
+        name={["auth", "email"]}
+        label="Почта"
         rules={[
           {
             required: true,
@@ -64,7 +77,7 @@ const FormAuth: React.FC<Props> = (props) => {
         }}
       >
         <Button htmlType="submit" type="primary">
-          Зарегистрироваться
+          {isRegister ? "Зарегистрироваться" : "Авторизироваться"}
         </Button>
       </Form.Item>
     </Form>

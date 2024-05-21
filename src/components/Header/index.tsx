@@ -2,8 +2,17 @@ import { Button } from "antd";
 import { Header } from "antd/es/layout/layout";
 import { Link } from "react-router-dom";
 import svgPlus from "../../assets/plus.svg";
+import { useSelector, useDispatch } from "react-redux";
+import { loguot, selectorIsAuth } from "../../redux/authSlice";
 
 const MainHeader = () => {
+  const isAuth = useSelector(selectorIsAuth);
+  const dispatch = useDispatch();
+
+  const onClickLogout = () => {
+    dispatch(loguot());
+    window.localStorage.removeItem("token");
+  };
   return (
     <Header style={{ backgroundColor: "#b5b5b5", borderRadius: 10 }}>
       <div style={{ display: "flex", alignItems: "center" }}>
@@ -16,9 +25,13 @@ const MainHeader = () => {
         <Link to={"/"}>
           <Button style={{ marginRight: 10 }}>Все задачи</Button>
         </Link>
-        <Link to={"/auth"}>
-          <Button>Авт/Рег</Button>
-        </Link>
+        {!isAuth ? (
+          <Link to={"/auth"}>
+            <Button> Авторизация</Button>
+          </Link>
+        ) : (
+          <Button onClick={onClickLogout}>Выйти</Button>
+        )}
 
         <h1
           style={{

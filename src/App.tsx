@@ -8,11 +8,23 @@ import Task from "./components/Tasks";
 import MainHeader from "./components/Header";
 import { Layout } from "antd";
 import MainForm from "./pages/MainForm";
-import { Provider } from "react-redux";
+import { Provider, useDispatch, useSelector } from "react-redux";
 import { store } from "./redux/store";
 import MainPageAuth from "./pages/MainPageAuth";
+import React from "react";
+import { authMe, selectorIsAuth } from "./redux/authSlice";
 
 const App = () => {
+  const dispatch = useDispatch();
+  const isAuth = useSelector(selectorIsAuth);
+
+  React.useEffect(() => {
+    //@ts-ignore
+    dispatch(authMe());
+  }, []);
+
+  console.log(window.localStorage.getItem("token"));
+
   return (
     <Layout>
       <div>

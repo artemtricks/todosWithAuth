@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { TodoTask } from "../types/types";
-import axios from "axios";
+import axios from "../axios";
 
 const initialState = {
   todo: [],
@@ -8,11 +8,11 @@ const initialState = {
   error: null,
 };
 
-const API_URL = "https://efccf8c1b1d51061.mokky.dev/todos";
+// const API_URL = "https://efccf8c1b1d51061.mokky.dev/todos";
 
 export const fetchTodos = createAsyncThunk("todo/fetchTodo", async () => {
   try {
-    const response = await axios.get(API_URL);
+    const response = await axios.get("/todos");
     return response.data;
   } catch (err) {
     console.log(err);
@@ -23,7 +23,7 @@ export const createNewTodo = createAsyncThunk(
   "todo/createTodo",
   async (data) => {
     try {
-      const response = await axios.post(API_URL, data);
+      const response = await axios.post("/todos", data);
       return response.data;
     } catch (err) {
       console.log(err);
@@ -34,7 +34,7 @@ export const createNewTodo = createAsyncThunk(
 export const updateTodo = createAsyncThunk("todo/updateTodo", async (data) => {
   try {
     //@ts-ignore
-    const response = await axios.patch(`${API_URL}/${data.id}`, data);
+    const response = await axios.patch(`/todos/${data.id}`, data);
     return response.data;
   } catch (err) {
     console.log(err);
@@ -43,7 +43,7 @@ export const updateTodo = createAsyncThunk("todo/updateTodo", async (data) => {
 
 export const deleteTodo = createAsyncThunk("todo/deleteTodo", async (id) => {
   try {
-    await axios.delete(`${API_URL}/${id}`);
+    await axios.delete(`/todos/${id}`);
   } catch (err) {
     console.log(err);
   }

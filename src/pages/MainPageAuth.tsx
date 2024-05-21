@@ -1,18 +1,37 @@
 import React from "react";
 import Layout from "antd/es/layout/layout";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import FormAuth from "../components/FormAuth";
-import { authTodos, registerTodos } from "../redux/authSlice";
+import { authTodos, registerTodos, selectorIsAuth } from "../redux/authSlice";
 import { Button } from "antd";
-
+import { useNavigate } from "react-router-dom";
 const MainPageAuth = () => {
+  const navigate = useNavigate();
+  const isAuth = useSelector(selectorIsAuth);
   const [isRegister, setIsRegister] = React.useState(false);
   const dispatch = useDispatch();
 
-  const onFinish = (values: any) => {
+  const onFinish = async (values: any) => {
+    const data = isRegister
+      ? //@ts-ignore
+        await dispatch(registerTodos(values))
+      : //@ts-ignore
+        await dispatch(authTodos(values));
+    const { payload } = data;
     //@ts-ignore
-    isRegister ? dispatch(registerTodos(values)) : dispatch(authTodos(values));
+    if (!payload?.token) {
+      return alert("Не удалось авторизоваться!");
+    }
+    //@ts-ignore
+    if (payload.token) {
+      //@ts-ignore
+      window.localStorage.setItem("token", payload?.token);
+    }
   };
+
+  if (isAuth) {
+    navigate("/");
+  }
 
   return (
     <Layout style={{ height: "100vh", padding: 20, marginTop: 40 }}>

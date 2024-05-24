@@ -44,7 +44,7 @@ const MainHeader = () => {
             fontSize: 30,
           }}
         >
-          {!!data && data.length > 0 ? "Задачи" : `Hello ${data?.fullName}!`}
+          {isAuthToken ? "Задачи" : `Hello ${data?.fullName}!`}
         </h1>
       </div>
     </Header>

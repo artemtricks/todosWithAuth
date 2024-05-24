@@ -4,11 +4,14 @@ import { CreateTodo } from "../types/types";
 import { createNewTodo } from "../redux/todoSlice";
 
 import FormToAdd from "../components/FormToAdd";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { selectorIsAuth } from "../redux/authSlice";
+import { Link } from "react-router-dom";
+import { Button } from "antd";
 
 const MainForm = () => {
   const dispatch = useDispatch();
-
+  const isAuth = useSelector(selectorIsAuth);
   const onFinish = React.useCallback(
     (values: CreateTodo) => {
       //@ts-ignore
@@ -29,9 +32,19 @@ const MainForm = () => {
           fontSize: 30,
         }}
       >
-        Добавление новой задачи
+        {isAuth
+          ? "Добавление новой задачи"
+          : "Необходимо авторизироваться или зарегистрироваться"}
       </h1>
-      <FormToAdd onFinish={onFinish} />
+      {isAuth ? (
+        <FormToAdd onFinish={onFinish} />
+      ) : (
+        <div style={{ textAlign: "center" }}>
+          <Link to={"/auth"}>
+            <Button> Перейти на авторизацию</Button>
+          </Link>
+        </div>
+      )}
     </Layout>
   );
 };

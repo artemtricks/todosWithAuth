@@ -4,6 +4,7 @@ import { TodoTask } from "../types/types";
 import ModalUpdate from "./ModalUpdate";
 import { deleteTodo, fetchTodos } from "../redux/todoSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { selectorIsAuth } from "../redux/authSlice";
 
 const Tasks = () => {
   const dispatch = useDispatch();
@@ -18,6 +19,8 @@ const Tasks = () => {
     //@ts-ignore
     dispatch(deleteTodo(id));
   };
+
+  const isAuth = useSelector(selectorIsAuth);
 
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [initialValue, setInitialValue] = React.useState<undefined | TodoTask>(
@@ -46,7 +49,12 @@ const Tasks = () => {
             >
               Редактировать
             </Button>
-            <Button onClick={() => handleDeleteTodo(item.id)}>Удалить</Button>
+            <Button
+              onClick={() => handleDeleteTodo(item.id)}
+              disabled={!isAuth}
+            >
+              Удалить
+            </Button>
           </List.Item>
         )}
       />

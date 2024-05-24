@@ -12,18 +12,18 @@ import { Provider, useDispatch, useSelector } from "react-redux";
 import { store } from "./redux/store";
 import MainPageAuth from "./pages/MainPageAuth";
 import React from "react";
-import { authMe, selectorIsAuth } from "./redux/authSlice";
+import { authMe } from "./redux/authSlice";
 
 const App = () => {
   const dispatch = useDispatch();
-  const isAuth = useSelector(selectorIsAuth);
+  //@ts-ignore
+  const data = useSelector((state) => state.auth);
+  console.log(data, "data");
 
   React.useEffect(() => {
     //@ts-ignore
     dispatch(authMe());
   }, []);
-
-  console.log(window.localStorage.getItem("token"));
 
   return (
     <Layout>

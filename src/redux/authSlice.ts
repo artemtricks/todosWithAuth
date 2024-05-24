@@ -79,6 +79,7 @@ export const authSlice = createSlice({
       state.error = null;
     });
     builder.addCase(authTodos.fulfilled, (state, action) => {
+      console.log(action.payload, "actionPayload");
       state.data = action.payload;
       state.status = "fullfiled";
       state.error = null;

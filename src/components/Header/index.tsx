@@ -7,6 +7,9 @@ import { loguot, selectorIsAuth } from "../../redux/authSlice";
 
 const MainHeader = () => {
   const isAuth = useSelector(selectorIsAuth);
+  const isAuthToken = Boolean(!isAuth && !window.localStorage.getItem("token"));
+  //@ts-ignore
+  const { data } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   const onClickLogout = () => {
@@ -25,7 +28,7 @@ const MainHeader = () => {
         <Link to={"/"}>
           <Button style={{ marginRight: 10 }}>Все задачи</Button>
         </Link>
-        {!isAuth ? (
+        {isAuthToken ? (
           <Link to={"/auth"}>
             <Button> Авторизация</Button>
           </Link>
@@ -41,7 +44,7 @@ const MainHeader = () => {
             fontSize: 30,
           }}
         >
-          мои задачи
+          {!!data && data.length > 0 ? "Задачи" : `Hello ${data?.fullName}!`}
         </h1>
       </div>
     </Header>
